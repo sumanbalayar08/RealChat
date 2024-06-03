@@ -1,24 +1,84 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Home Page</title>
-  </head>
-  <body>
-    <h1>Welcome to Chat Page</h1>
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Home Page</title>
+  <style>
+    body {
+      background-color: rgb(0, 202, 108);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-    <ul>
+    .heading {
+      text-align: center;
+      color: rgb(0, 0, 0);
+      margin-bottom: 20px;
+    }
+
+    .main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .userlist {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    a {
+      list-style: none;
+      text-decoration: none;
+      color: rgb(255, 255, 255);
+      font-weight: 500;
+      font-size: x-large;
+    }
+
+    .chat-user-list {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+    }
+
+    .chat-user-list li {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 10px;
+      border-radius: 10px;
+      background-color: #008bdb;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main">
+    <div class="heading">
+      <h1>CHATTER</h1>
+    </div>
+    <div class="userlist">
+      <ul class="chat-user-list">
+        {% load static %}
         {% for user in connected_users %}
-            <li>{{ user.username }}</li>
+        <li>
+          <img alt="profile picture" src="{% static 'images/man.png' %}" width="50"/>
+          <a href="{% url 'chat_view' user.username %}">{{ user.username }}</a>
+        </li>
         {% endfor %}
-    </ul>
-    <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
-  </body>
+      </ul>
+    </div>
+  </div>
+</body>
 
-  <script>
-    console.log(user.username);
-  </script>
 </html>

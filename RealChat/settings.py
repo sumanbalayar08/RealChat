@@ -134,3 +134,13 @@ CHANNEL_LAYERS = {
     }
 }
 
+STATIC_URL = '/static/'
+
+# Directories where Django will look for static files
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+    # Add more directories here if needed
+]
+
+# The directory where `collectstatic` will store static files
+STATIC_ROOT = BASE_DIR / "staticfiles"

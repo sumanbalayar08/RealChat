@@ -30,24 +30,30 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         receiver = await database_sync_to_async(User.objects.get)(username=receiver_username)
         
-        await database_sync_to_async(Message.objects.create)(
+        # Save the message to the database
+        saved_message = await database_sync_to_async(Message.objects.create)(
             sender=self.user, receiver=receiver, content=message
         )
 
+        # Send the message to the room group
         await self.channel_layer.group_send(
             self.room_group_name,
             {
                 'type': 'chat_message',
                 'message': message,
-                'sender': self.user.username
+                'sender': self.user.username,
+                'time': saved_message.timestamp.strftime('%H:%M')
             }
         )
 
     async def chat_message(self, event):
         message = event['message']
         sender = event['sender']
+        time = event['time']
 
+        # Send the message to WebSocket
         await self.send(text_data=json.dumps({
             'message': message,
-            'sender': sender
+            'sender': sender,
+            'time': time
         }))
