@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'channels'
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -57,7 +57,7 @@ ROOT_URLCONF = 'RealChat.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -134,6 +134,3 @@ CHANNEL_LAYERS = {
     }
 }
 
-LOGIN_REDIRECT_URL = "chat-page"
-LOGOUT_REDIRECT_URL = "login-user"
-SIGNUP_URL = "signup-page"
