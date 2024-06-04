@@ -57,3 +57,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'sender': sender,
             'time': time
         }))
+    
+    async def user_logout(self, event):
+        user_id = event['user_id']
+        username = event['username']
+
+        await self.send(text_data=json.dumps({
+            'type': 'user_logout',
+            'user_id': user_id,
+            'username': username,
+        }))

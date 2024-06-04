@@ -1,15 +1,23 @@
 from django.shortcuts import render,HttpResponse,redirect,get_object_or_404
 from django.contrib.auth.models import User
+from django.contrib.sessions.models import Session
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
-from .models import Message,User
-
+from .models import Message,User,Session
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+from django.utils import timezone
 
 # Create your views here.
 @login_required(login_url='login')
 def chat_home(request):
-    users = User.objects.exclude(username=request.user.username)
-    return render(request, 'chat_home.html', {'connected_users': users})
+    # Get all active sessions
+    active_sessions = Session.objects.filter(expire_date__gte=timezone.now())
+    # Extract user ids from active sessions
+    active_user_ids = [session.get_decoded().get('_auth_user_id') for session in active_sessions]
+    # Get users associated with active sessions
+    online_users = User.objects.filter(id__in=active_user_ids).exclude(username=request.user.username)
+    return render(request, 'chat_home.html', {'connected_users': online_users})
 
 @login_required
 def chat_view(request, username):
@@ -56,6 +64,22 @@ def LoginPage(request):
 
     return render (request,'login.html')
 
+
 def LogoutPage(request):
-    logout(request)
+    user = request.user
+    if user.is_authenticated:
+        # Delete the user session
+        request.session.delete()
+
+        # Send the logout message to the group
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            "online_users",  # Group name
+            {
+                "type": "user_logout",
+                "user_id": user.id,
+                "username": user.username,
+            },
+        )
+        logout(request)
     return redirect('login')
