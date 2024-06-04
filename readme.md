@@ -11,7 +11,7 @@ RealChat is a real-time chat application built with Django and Django Channels. 
 5. [Project Structure](#project-structure)
 6. [Testing](#testing)
 7. [Contributing](#contributing)
-8. [License](#license)
+
 
 ## Features
 
@@ -33,3 +33,30 @@ RealChat is a real-time chat application built with Django and Django Channels. 
    ```bash
    git clone https://github.com/sumanbalayar08/RealChat.git
    cd RealChat
+
+2. **Install Dependencies:**
+
+   ```bash
+   pip install -r requirements.txt
+
+## Running the Project
+
+1. **Apply the migrations:**
+
+   ```bash
+   python3 manage.py makemigrations
+   python3 manage.py migrate
+
+2. **Create A SuperUser:**
+
+   ```bash
+   python manage.py createsuperuser
+
+
+3. **Run the development server:**
+
+   ```bash
+   python3 manage.py runserver
+
+
+   
