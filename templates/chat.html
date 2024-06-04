@@ -129,7 +129,8 @@
         </div>
         <div class="chat__item__container" id="id_chat_item_container">
             {% for message in messages %}
-            <div class="chat-message {% if message.sender.username == request.user.username %}right{% else %}left{% endif %}">
+            <div
+                class="chat-message {% if message.sender.username == request.user.username %}right{% else %}left{% endif %}">
                 <span class="message-username">{{ message.sender.username }}</span>
                 <span class="message-text">{{ message.content }}</span>
                 <span class="message-timestamp">{{ message.timestamp|date:"H:i" }}</span>
@@ -145,26 +146,26 @@
         const roomName = "{{ user.username }}";
         const chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + roomName + '/');
 
-        chatSocket.onopen = function(e) {
+        chatSocket.onopen = function (e) {
             console.log("The WebSocket connection was set up successfully!");
         };
 
-        chatSocket.onclose = function(e) {
+        chatSocket.onclose = function (e) {
             console.error("The WebSocket connection was closed unexpectedly!");
         };
 
-        chatSocket.onerror = function(e) {
+        chatSocket.onerror = function (e) {
             console.error("WebSocket error: ", e);
         };
 
         document.querySelector("#id_message_send_input").focus();
-        document.querySelector("#id_message_send_input").onkeyup = function(e) {
+        document.querySelector("#id_message_send_input").onkeyup = function (e) {
             if (e.keyCode === 13) {
                 document.querySelector("#id_message_send_button").click();
             }
         };
 
-        document.querySelector("#id_message_send_button").onclick = function(e) {
+        document.querySelector("#id_message_send_button").onclick = function (e) {
             const messageInputDom = document.querySelector("#id_message_send_input");
             const message = messageInputDom.value;
             if (message.trim() === "") {
@@ -182,21 +183,57 @@
             messageInputDom.value = '';
         };
 
-        chatSocket.onmessage = function(e) {
+
+        chatSocket.onmessage = function (e) {
             const data = JSON.parse(e.data);
             console.log("Message received: ", data);
 
             const messageContainer = document.querySelector("#id_chat_item_container");
             const div = document.createElement("div");
+
+            // Determine if the message is sent by the current user or the other user
             div.className = (data.sender === "{{ request.user.username }}") ? "chat-message right" : "chat-message left";
-            div.innerHTML = `<div class="message-content">
-                <span class="message-username">${data.sender.charAt(0).toUpperCase() + data.sender.slice(1)}</span>
-                <span class="message-text">${data.message}</span>
-                <span class="message-timestamp">${data.time}</span>
-            </div>`;
+            div.innerHTML = `
+        <div class="message-content">
+            <span class="message-username">${data.sender.charAt(0).toUpperCase() + data.sender.slice(1)}</span>
+            <span class="message-text">${data.message}</span>
+            <span class="message-timestamp">${data.time}</span>
+        </div>`;
+
+            // Append the new message to the chat container
             messageContainer.appendChild(div);
+            // Scroll to the bottom of the chat container to show the latest message
             messageContainer.scrollTop = messageContainer.scrollHeight;
+
         };
+
+        // Periodically fetch new messages
+        setInterval(function () {
+            chatSocket.onmessage = function (e) {
+                const data = JSON.parse(e.data);
+                console.log("Message received: ", data);
+
+                const messageContainer = document.querySelector("#id_chat_item_container");
+                const div = document.createElement("div");
+
+                // Determine if the message is sent by the current user or the other user
+                div.className = (data.sender === "{{ request.user.username }}") ? "chat-message right" : "chat-message left";
+                div.innerHTML = `
+        <div class="message-content">
+            <span class="message-username">${data.sender.charAt(0).toUpperCase() + data.sender.slice(1)}</span>
+            <span class="message-text">${data.message}</span>
+            <span class="message-timestamp">${data.time}</span>
+        </div>`;
+
+                // Append the new message to the chat container
+                messageContainer.appendChild(div);
+                // Scroll to the bottom of the chat container to show the latest message
+                messageContainer.scrollTop = messageContainer.scrollHeight;
+
+            };
+        }, 3000);  // Fetch new messages every 3 seconds
+
+
     </script>
 </body>
 
