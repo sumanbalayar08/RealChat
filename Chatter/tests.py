@@ -16,7 +16,7 @@ class ViewsTestCase(TestCase):
 
     def test_signup_view(self):
         response = self.client.post(reverse('signup'), {
-                                    'username': 'newuser', 'email': 'newuser@example.com', 'password1': '12345', 'password2': '12345'})
+        'username': 'newuser', 'email': 'newuser@example.com', 'password1': '12345', 'password2': '12345'})
         # Check if the user is redirected after signup
         self.assertEqual(response.status_code, 302)
 
