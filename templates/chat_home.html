@@ -59,6 +59,14 @@
       align-items: center;
       gap: 10px;
     }
+
+    .info {
+      text-align: center;
+      color: rgb(156, 7, 7);
+      margin-bottom: 2px;
+      font-weight: bold;
+      font-size: larger;
+    }
   </style>
 </head>
 
@@ -68,14 +76,19 @@
       <h1>CHATTER</h1>
     </div>
     <div class="userlist">
+
       <ul class="chat-user-list">
         {% load static %}
-        {% for user in connected_users %}
-        <li>
-          <img alt="profile picture" src="{% static 'images/man.png' %}" width="50"/>
-          <a href="{% url 'chat_view' user.username %}">{{ user.username }}</a>
-        </li>
-        {% endfor %}
+        {% if connected_users %}
+          {% for user in connected_users %}
+            <li>
+              <img alt="profile picture" src="{% static 'images/man.png' %}" width="50"/>
+              <a href="{% url 'chat_view' user.username %}">{{ user.username }}</a>
+            </li>
+          {% endfor %}
+        {% else %}
+          <div class="info">No users available Currently</div>
+        {% endif %}
       </ul>
     </div>
   </div>

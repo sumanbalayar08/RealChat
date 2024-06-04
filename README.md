@@ -64,8 +64,6 @@ The project structure is organized as follows:
 
 - **Chatter/**: This directory contains the Django app for the chat functionality.
   - **migrations/**: Directory for Django database migrations.
-  - **static/**: Directory for static files such as CSS, JavaScript, and images.
-  - **templates/**: Directory for HTML templates.
   - **\_\_init\_\_.py**: Python package initialization file.
   - **admin.py**: Configuration for Django admin interface.
   - **apps.py**: Configuration for Django app.
@@ -83,8 +81,19 @@ The project structure is organized as follows:
   - **urls.py**: URL configuration for the project.
   - **wsgi.py**: WSGI configuration for running the Django development server.
 
+- **static/**: Directory for static files and images.
+
+- **templates/**: Directory for HTML templates.
+
 - **manage.py**: Django project management script for administrative tasks.
 
 - **requirements.txt**: File listing all Python dependencies required to run the project.
 
 - **README.md**: Project documentation file.
+
+## Testing
+
+1. **Run unit tests:**
+
+   ```bash
+   python3 manage.py test Chatter
