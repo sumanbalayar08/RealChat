@@ -57,3 +57,34 @@ RealChat is a real-time chat application built with Django and Django Channels. 
    ```bash
    python3 manage.py runserver
    
+## Project Structure
+
+
+The project structure is organized as follows:
+
+- **Chatter/**: This directory contains the Django app for the chat functionality.
+  - **migrations/**: Directory for Django database migrations.
+  - **static/**: Directory for static files such as CSS, JavaScript, and images.
+  - **templates/**: Directory for HTML templates.
+  - **\_\_init\_\_.py**: Python package initialization file.
+  - **admin.py**: Configuration for Django admin interface.
+  - **apps.py**: Configuration for Django app.
+  - **consumers.py**: WebSocket consumer for handling chat functionality.
+  - **models.py**: Definition of Django models for message storage.
+  - **routing.py**: Routing configuration for WebSocket connections.
+  - **tests.py**: Unit tests for the app.
+  - **urls.py**: URL configuration for the app.
+  - **views.py**: Views for rendering HTML templates and handling HTTP requests.
+
+- **RealChat/**: This directory contains the Django project settings and configuration.
+  - **\_\_init\_\_.py**: Python package initialization file.
+  - **asgi.py**: ASGI configuration for running the WebSocket server.
+  - **settings.py**: Django project settings.
+  - **urls.py**: URL configuration for the project.
+  - **wsgi.py**: WSGI configuration for running the Django development server.
+
+- **manage.py**: Django project management script for administrative tasks.
+
+- **requirements.txt**: File listing all Python dependencies required to run the project.
+
+- **README.md**: Project documentation file.
