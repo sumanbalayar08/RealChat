@@ -52,11 +52,8 @@ RealChat is a real-time chat application built with Django and Django Channels. 
    ```bash
    python manage.py createsuperuser
 
-
 3. **Run the development server:**
 
    ```bash
    python3 manage.py runserver
-
-
    
